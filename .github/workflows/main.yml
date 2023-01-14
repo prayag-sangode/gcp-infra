@@ -28,7 +28,7 @@ jobs:
         uses: google-github-actions/auth@v0
         with:
           workload_identity_provider: 'projects/264743567458/locations/global/workloadIdentityPools/github-oidc-pool/providers/action'
-          service_account: 'GCP-SA@$mypoc-374706.iam.gserviceaccount.com'
+          service_account: 'GCP-SA@mypoc-374706.iam.gserviceaccount.com'
           #token_format: 'access_token' # uncomment to troubleshoot "permission denied" errors
           create_credentials_file: true
           export_environment_variables: true
