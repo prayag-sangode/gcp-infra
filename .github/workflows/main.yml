@@ -1,0 +1,65 @@
+name: "GCP Infra"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  google-cloud-auth:
+    name: GCP Infra
+    runs-on: ubuntu-latest
+
+    # Add "id-token" for Google Authentication
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # Configure Workload Identity Federation via a credentials file.
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: 'projects/264743567458/locations/global/workloadIdentityPools/github-oidc-pool/providers/action'
+          service_account: 'GCP-SA@$mypoc-374706.iam.gserviceaccount.com'
+          #token_format: 'access_token' # uncomment to troubleshoot "permission denied" errors
+          create_credentials_file: true
+          export_environment_variables: true
+          
+      # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+      - name: 'Set up Google Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+        
+      # Now you can run gcloud commands authenticated as the impersonated service account.
+      - id: 'gcloud'
+        name:  Google Cloud CLI
+        run: |
+          gcloud config list
+          gsutil ls
+          
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+       
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+        
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+        
+      #- name: Terraform Destroy
+      #  id: destroy
+      #  run: terraform destroy -auto-approve
