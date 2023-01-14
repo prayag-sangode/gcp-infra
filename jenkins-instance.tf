@@ -1,5 +1,4 @@
 resource "google_compute_instance" "default" {
-  project      = "var.project_id"
   name         = "jenkins-server"
   machine_type = "e2-standard-2"
   zone         = "var.zone"
@@ -27,7 +26,6 @@ resource "google_compute_instance" "default" {
 
 resource "google_compute_firewall" "http-server" {
   name    = "default-allow-http-terraform"
-  project      = "var.project_id"
   network = "default"
 
   allow {
