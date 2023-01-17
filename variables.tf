@@ -1,7 +1,7 @@
 
 variable "project_id" {
   type        = string
-  default = "mypoc-374706"
+  default = "pune-powerhouse"
 }
 
 variable "region" {
