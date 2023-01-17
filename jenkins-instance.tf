@@ -1,6 +1,6 @@
 resource "google_compute_instance" "default" {
   name         = "jenkins-server"
-  machine_type = "e2-standard-2"
+  machine_type = "e2-micro"
   zone         = var.zone
 
   boot_disk {
