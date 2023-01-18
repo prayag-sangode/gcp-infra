@@ -1,5 +1,5 @@
 resource "google_compute_instance" "default" {
-  name         = "jenkins-server2"
+  name         = "jenkins-server-test"
   machine_type = "e2-micro"
   zone         = var.zone
 
